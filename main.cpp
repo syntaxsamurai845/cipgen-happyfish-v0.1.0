@@ -157,67 +157,56 @@ int main(){
 			}
 
 			//byte file en-/decryption
-		} else if(op2 == 'b'){
+		} else if(op2 == 'b') {
+            cout << "(d)ecryption or (e)ncryption" << endl;
+            cout << "> ";
+            cin >> op3;
 
-			cout << "(d)ecryption or (e)ncryption"<< endl;
-			cout << "> ";
-			cin >> op3;
+            if(op3 == 'e') {
+                ifstream inf(fpath, ios::binary);
+                if(!inf.is_open()) throw runtime_error("Can't open input byte file");
 
-			//encryption
-			if(op3 == 'e'){
+                ofstream temp("temp.bin", ios::binary);
+                if(!temp.is_open()) throw runtime_error("Can't create temp file");
 
-				ifstream inf(fpath, ios::binary);
-				if(!inf.is_open()){
-					throw runtime_error("Can't open input byte file");
-				}
+                cout << "Enter caesar encryption key (0 - 255): ";
+                cin >> bkey;
 
-				ofstream temp("temp.bin", ios::binary);
-				if(!temp.is_open()){
-					throw runtime_error("Can't create temp file");
-				}
+                bytecrypt(inf, temp, bkey);
+                inf.close(); temp.close();
 
-				cout << "Enter caesar encryption key (0 - 255): ";
-				cin >> bkey;
+                remove(fpath.c_str());
+                rename("temp.bin", fpath.c_str());
 
-				bytecrypt(inf, temp, bkey);
+            } else if(op3 == 'd') {
+                ifstream inf(fpath, ios::binary);
+                if(!inf.is_open()) throw runtime_error("Can't open input byte file");
 
-				inf.close();
-				temp.close();
+                ofstream temp("temp.bin", ios::binary);
+                if(!temp.is_open()) throw runtime_error("Can't create temp file");
 
-				remove(fpath.c_str());
-				rename("temp.bin", fpath.c_str());
+                cout << "Enter caesar decryption key (0 - 255): ";
+                cin >> bkey;
 
-				//decryption
-			} else if(op3 == 'd'){
+                bytedecrypt(inf, temp, bkey);
+                inf.close(); temp.close();
 
-				ifstream inf(fpath, ios::binary);
-				if(!inf.is_open()){
-					throw runtime_error("Can't open input byte file");
-				}
+                remove(fpath.c_str());
+                rename("temp.bin", fpath.c_str());
 
-				ofstream temp("temp.bin", ios::binary);
-				if(!temp.is_open()){
-					throw runtime_error("Can't create temp file");
-				}
+            } else {
+                throw runtime_error("Invalid option, read manual for more information");
+            }
 
-				cout << "Enter caesar decryption key (0 - 255): ";
-				cin >> bkey;
+        } else if(op1 == 'q') {
+            exit(0);
+        } else {
+            throw runtime_error("Invalid option, view manual for more information");
+        }
+    }
 
-				bytedecrypt(inf, temp, bkey);
-
-				inf.close();
-				temp.close();
-
-				remove(fpath.c_str());
-				rename("temp.bin", fpath.c_str());
-
-			}else {
-				throw runtime_error("Invalid option, read manual for more information");
-
-			}}else if(op1 == 'q'){
-				exit(0);
-			}else{
-				throw runtime_error("Invalid option, view manual for more information");
-			}
-		return 0;
-	}}
+    cout << "Press Enter to exit...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.get();
+    return 0;
+}
