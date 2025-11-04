@@ -67,13 +67,13 @@ This project is meant for learning and experimentation, not for production-grade
 **Encrypt a text file:**
 
 ```
-2 → t → e
+2 -> t -> filepath → e
 ```
 
 **Decrypt a binary file:**
 
 ```
-2 → b → d
+2 -> b → filepath -> d
 ```
 
 ---
